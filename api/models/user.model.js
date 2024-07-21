@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
     },
     avatar:{
         type:String,
-        photo:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKJQp8ndvEkIa-u1rMgJxVc7BBsR11uSLHGA&s"
+        avatar:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKJQp8ndvEkIa-u1rMgJxVc7BBsR11uSLHGA&s"
     },
 },{timestaps:true});
 

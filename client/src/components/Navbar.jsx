@@ -1,6 +1,8 @@
 import SearchIcon from '@mui/icons-material/Search';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 const Navbar = () => {
+    const {currentUser} = useSelector((state) => state.user);
   return (
     <>
     <header className="flex flex-row w-screen bg-slate-300 p-4 items-center justify-around">
@@ -26,7 +28,9 @@ const Navbar = () => {
                     <li className="p-2 hidden sm:inline hover:underline">About</li>
                     </Link>
                     <Link to={"/sign-in"}>
-                    <li className="p-2 hover:underline">Sign In</li>
+                    {
+                        currentUser ? <img src={currentUser.avatar} alt="avatar" className="w-10 h-10 object-cover mx-2 rounded-full"/> : <li className="p-2 hover:underline">Sign In</li>
+                    }
                     </Link>
                 </ul>
             </nav>
