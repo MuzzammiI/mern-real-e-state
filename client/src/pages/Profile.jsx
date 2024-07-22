@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { app } from "../../firebase";
-import { set } from "mongoose";
 
 
 const Profile = () => {
@@ -27,7 +26,7 @@ const Profile = () => {
     const storage = getStorage(app);
     const fileName = new Date().getTime() + file.name;
     const storageRef = ref(storage, fileName);
-    console.log(storageRef);
+    // console.log(storageRef);
 
     const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -62,10 +61,10 @@ const Profile = () => {
   // console.log(file);
   return (
     <div className="max-w-lg m-auto ">
-      <h1 className="text-3xl font-semibold text-center mt-4">Profile</h1>
+      <h1 className="text-3xl font-semibold text-center m-4">Profile</h1>
       <form className="flex flex-col gap-4">
         <input type="file" ref={FileRef} hidden accept="image/*" onChange={(e)=>setFile(e.target.files[0])} />
-    <img src={currentUser.currentUser.avatar} onClick={()=>FileRef.current.click()} alt="avatar" className="w-24 cursor-pointer h-24 rounded-full self-center mt-2 " />
+    <img src={formdata.avatar || currentUser.currentUser.avatar} onClick={()=>FileRef.current.click()} alt="avatar" className="w-24 cursor-pointer h-24 rounded-full object-cover object-top self-center mt-2 " />
      
      <p className="text-sm self-center">
      {fileUploaderror ? <span className="text-red-700">Error Uploading File</span>
