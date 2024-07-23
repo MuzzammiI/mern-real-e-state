@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { userUpdateStart, userUpdateSuccess, userUpdateFailure } from "../../redux/user/UserSlice.js";
+import { userUpdateStart, userUpdateSuccess, userUpdateFailure ,deleteUserStart,deleteUserSuccess,deleteUserFailure , SignOutUserFailure,SignOutUserStart,SignOutUserSuccess } from "../../redux/user/UserSlice.js";
 import {
   getStorage,
   ref,
@@ -18,9 +18,10 @@ const Profile = () => {
   const [filePercentage, setFilePercentage] = useState(0);
   const [fileUploaderror, setFileUploadError] = useState(false);
   const [datasuceess, setDataSuccess] = useState(false);
+  const [deleteuserSuccess, setDeleteUserSuccess] = useState(false);
   const [formdata, setFormData] = useState({});
   // console.log(filePercentage)
-  console.log(formdata);
+  // console.log(formdata);
 
   useEffect(() => {
     if (file) {
@@ -69,7 +70,7 @@ const Profile = () => {
     e.preventDefault();
 
     try {
-      dispatch(userUpdateStart());
+      dispatch(deleteUserStart());
       const res = await fetch(
         `/api/user/update/${currentUser.currentUser._id}`,
         {
@@ -82,17 +83,63 @@ const Profile = () => {
       );
       const data = await res.json();
       if (data.success === false) {
-        dispatch(userUpdateFailure(data.message));
+        dispatch(deleteUserFailure(data.message));
         return;
       }
-      dispatch(userUpdateSuccess(data));
-      setDataSuccess(data);
+      dispatch(deleteUserSuccess(data.message));
+      setDeleteUserSuccess(data);
       console.log(data);
 
     } catch (error) {
-      dispatch(userUpdateFailure(error.message));
+      dispatch(deleteUserFailure(error.message));
     }
   };
+
+
+  // Delete User
+  const DeleteUserHandle = async () => {
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(
+        `/api/user/delete/${currentUser.currentUser._id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(userUpdateFailure(data.message));
+        return;
+      }
+      dispatch(deleteUserSuccess(data));
+      // setDataSuccess(data);
+      // console.log(data);
+
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+    }
+  }
+
+  // Sign Out
+  const handleSignOut = async () => {
+    dispatch(SignOutUserStart());
+    try {
+      const res = await fetch("/api/auth/signout", {
+        method: "GET",
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(SignOutUserFailure(data.message));
+        return;
+      }
+      dispatch(SignOutUserSuccess(data));
+      // setDataSuccess(data);
+      // console.log(data);
+
+    } catch (error) {
+      dispatch(SignOutUserFailure(error.message));
+    }
+  }
 
   // console.log(file);
   return (
@@ -152,15 +199,17 @@ const Profile = () => {
         </button>
       </form>
       <div className="flex flex-row justify-between ">
-        <span className="text-red-700 mt-2 font-semibold cursor-pointer">
+        <span className="text-red-700 mt-2 font-semibold cursor-pointer" onClick={DeleteUserHandle}>
           Delete Account
         </span>
-        <span className="text-red-700 mt-2 font-semibold cursor-pointer">
+        <span className="text-red-700 mt-2 font-semibold cursor-pointer" onClick={handleSignOut}>
           Sign Out
         </span>
       </div>
       {error ? <p className="text-red-700 mt-2 font-semibold text-center ">{error}</p> : ""}
           {datasuceess ? <p className="text-green-700 mt-2 font-semibold text-center ">Profile Update Successfully.</p> : ""}
+          {deleteuserSuccess ? <p className="text-green-700 mt-2 font-semibold text-center ">User has been Deleted.</p> : ""}
+
   
     </div>
   );

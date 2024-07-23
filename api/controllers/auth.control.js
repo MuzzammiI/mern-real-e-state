@@ -85,3 +85,14 @@ export const google = async (req, res, next) => {
     next(errorHandler(502, "Google Signin Error"));
   }
 };
+
+
+
+export const signout = async (req, res, next) => {  
+  try {
+    res.clearCookie("token_access");
+    res.status(200).json("Signout Successfully");
+  } catch (error) {
+    next(errorHandler(502, "Signout Error"));
+  }
+};
