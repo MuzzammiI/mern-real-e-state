@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { userUpdateStart, userUpdateSuccess, userUpdateFailure ,deleteUserStart,deleteUserSuccess,deleteUserFailure , SignOutUserFailure,SignOutUserStart,SignOutUserSuccess } from "../../redux/user/UserSlice.js";
 import {
   getStorage,
@@ -194,9 +195,12 @@ const Profile = () => {
           className="p-3 rounded-lg border"
         />
 
-        <button disabled={loading} className="p-4 rounded-lg text-white bg-slate-700 opacity-95 disabled:opacity-80 hover:opacity-100">
+        <button disabled={loading} className="p-4 rounded-lg text-white uppercase bg-slate-700 opacity-95 disabled:opacity-80 hover:opacity-100">
           {loading ? "Loading..." : "Update"}
         </button>
+        <Link className="bg-green-700 text-center text-white uppercase font-semibold cursor-pointer p-3 rounded-lg hover:opacity-95 disabled:opacity-85" to={"/create-listing"}>
+        Create Listing
+        </Link>
       </form>
       <div className="flex flex-row justify-between ">
         <span className="text-red-700 mt-2 font-semibold cursor-pointer" onClick={DeleteUserHandle}>
